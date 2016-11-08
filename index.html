@@ -1,10 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/easy-gallery.js"></script>
+
+    <link href="css/easy-gallery.css" rel="stylesheet" media="screen">
+
     <meta charset="UTF-8">
     <title>Easy Gallery</title>
 </head>
 <body>
+
+<!--
+<div class="gallery-list" style="width: 1000px;">
+    <div class="gallery-viewer">
+        <div class="gallery-item1" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg" width="100%"></div>
+    </div>
+    <div class="gallery-list-wrapper">
+        <div class="gallery-list">
+            <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg" width="100%"></div>
+            <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg" width="100%"></div>
+            <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg" width="100%"></div>
+            <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg" width="100%"></div>
+        </div>
+    </div>
+</div>
+-->
+
+
+<div class="gallery-list" style="width: 800px;">
+    <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image1.jpg"></div>
+    <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image2.jpg"></div>
+    <div class="gallery-item" data-link="http://www.google.com" data-title="This picture is beautiful."><img src="images/image3.jpg"></div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+
+    $('.gallery-list').gallery({'slide': true, 'link': '/tipcard/view/'});
+
+});
+
+</script>
 
 </body>
 </html>

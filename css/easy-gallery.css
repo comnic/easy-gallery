@@ -1,0 +1,6 @@
+.__gallery-main{width:100%;}
+.__gallery-viewer{float:left;overflow:hidden;}
+.__gallery-viewer .__gallery-item img{width: 100%;}
+.__gallery-list-wrapper{float:left;overflow:auto;}
+.__gallery-list-wrapper .__gallery-list{position:relative;}
+.__gallery-list-wrapper .__gallery-list .__gallery-item img{width: 100%;}
