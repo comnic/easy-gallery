@@ -6,17 +6,14 @@
         var _gallery = this;
 
         var _ratio_width = .75;
+        var _slideInterval;
 
-        var _total_cnt = 0;
         var _current = 1;
         var _total_height = _total_width = $(this).width();
         var _list_item_height = 100;
 
         var _list = $('.gallery-item', this);
-
-        var _org_width = $('img', $(_list[0])).width();
-        var _org_height = $('img', $(_list[0])).height();
-
+        var _total_item = _list.length;
 
         $(_gallery).empty();
 
@@ -31,10 +28,26 @@
         var _gallery_viewer = $('.__gallery-viewer');
         var _gallery_list_wrapper = $('.__gallery-list-wrapper');
         var _gallery_list = $('.__gallery-list');
-        //var _gallery_item_title = $('.__item-title');
 
+        if( params['slide'] == true ) {
+            _slideInterval = setInterval(function () {
+                slide();
+            }, 3000);
+        }
 
-        //$(this).css('height', $(_gallery_viewer).height() + 50); //Title을 출력하기 위해
+        $(_gallery_list_wrapper).hover(
+            function(){
+                console.log('Mouse Over!');
+                clearInterval(_slideInterval);
+            },
+            function(){
+                console.log('Mouse Out!');
+                _slideInterval = setInterval(function () {
+                    slide();
+                }, 3000);
+            }
+        );
+
 
         $.each($(_list), function(idx, item){
             console.log($(item).data('title'));
@@ -43,47 +56,45 @@
 
             if( idx == 0){
                 //첫번째 이미지가 로드 되었는지 확인한다.
-                var firstImg = $('img', $(this));
+                //첫번째 이미지가 로드 되지 않았을 때를 고려하여 모든 이미지가 다 로딩되었을 때 사이즈를 계산해야 할지?? 고민.
+                var firstImg = $('img', this);
                 if($(firstImg).prop('complete') && $(firstImg).prop('naturalWidth') > 0){
                     console.log("IMG1 already loaded.");
-                    console.log('Init Size.')
+                    console.log('Init Size.');
                     gallery_size_fix();
                 }else {
-                    $('img', $(this)).on('load', function () {
+                    $('img', this).on('load', function () {
                         console.log("IMG1 loaded.");
-                        console.log('Init Size.')
+                        console.log('Init Size.');
                         gallery_size_fix();
                     });
                 }
 
+                $(_gallery_viewer).append( this );
 
-                $(_gallery_viewer).append($(this));
-                //$(_gallery_item_title).html($(this).data('title'));
             }else{
-                $(_gallery_list).append($(this));
+                $(this).css('height', _list_item_height + 'px');
+                $(_gallery_list).append( this );
             }
         });
 
         $(_gallery_list_wrapper).css('height', $(_gallery_viewer).height());
 
-
-        if( params['slide'] == true )
-            setInterval(function(){ slide(); }, 3000);
-
-
         function gallery_size_fix(){
+            //첫번째 큰 이미지의 크기를 기준으로 한다.
+            var _org_width = $('img', $(_list[0])).prop('naturalWidth');
+            var _org_height = $('img', $(_list[0])).prop('naturalHeight');
 
             $(_gallery_viewer).width($(_gallery).width() * _ratio_width);
-            $(_gallery_viewer).height(Math.round(_org_height * $(_gallery_viewer).width() / _org_width));
+
+            var viewer_height = Math.round(_org_height * $(_gallery_viewer).width() / _org_width);
+
+            $(_gallery_main).height(viewer_height);
+            $(_gallery_viewer).height(viewer_height);
 
             $(_gallery_list_wrapper).width($(_gallery).width() * (1 - _ratio_width));
 
             _list_item_height = Math.round($(_gallery_viewer).height() / 3)
-
-        }
-
-        function test(){
-
 
         }
 
@@ -99,6 +110,8 @@
             $(_gallery_viewer).empty();
             $(_gallery_viewer).append(item2);
             $(_gallery_list).append(item1);
+            $(item1).css('height', _list_item_height + 'px');
+
             $(item2).css('display', 'none');
             $(item2).fadeIn(1000);
 
@@ -108,7 +121,6 @@
                 $(_gallery_list).children().first().remove();
                 $(_gallery_list).css('top', '+='+_list_item_height);
             });
-
 
 
         }
