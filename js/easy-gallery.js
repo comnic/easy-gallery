@@ -1,3 +1,4 @@
+
 (function($) {
 
     $.fn.gallery = function(params) {
@@ -32,17 +33,8 @@
         var _gallery_list = $('.__gallery-list');
         //var _gallery_item_title = $('.__item-title');
 
-        $(_gallery_viewer).width($(_gallery).width() * _ratio_width);
-        $(_gallery_viewer).height(Math.round(_org_height * $(_gallery_viewer).width() / _org_width));
-
-        $(_gallery_list_wrapper).width($(_gallery).width() * (1 - _ratio_width));
-
-        //$(_gallery_list_wrapper).height(_viewer_height);
-        _list_item_height = Math.round($(_gallery_viewer).height() / 3)
-
 
         //$(this).css('height', $(_gallery_viewer).height() + 50); //Title을 출력하기 위해
-
 
         $.each($(_list), function(idx, item){
             console.log($(item).data('title'));
@@ -50,6 +42,21 @@
             $(this).addClass('__gallery-item-' + (idx + 1));
 
             if( idx == 0){
+                //첫번째 이미지가 로드 되었는지 확인한다.
+                var firstImg = $('img', $(this));
+                if($(firstImg).prop('complete') && $(firstImg).prop('naturalWidth') > 0){
+                    console.log("IMG1 already loaded.");
+                    console.log('Init Size.')
+                    gallery_size_fix();
+                }else {
+                    $('img', $(this)).on('load', function () {
+                        console.log("IMG1 loaded.");
+                        console.log('Init Size.')
+                        gallery_size_fix();
+                    });
+                }
+
+
                 $(_gallery_viewer).append($(this));
                 //$(_gallery_item_title).html($(this).data('title'));
             }else{
@@ -63,6 +70,17 @@
         if( params['slide'] == true )
             setInterval(function(){ slide(); }, 3000);
 
+
+        function gallery_size_fix(){
+
+            $(_gallery_viewer).width($(_gallery).width() * _ratio_width);
+            $(_gallery_viewer).height(Math.round(_org_height * $(_gallery_viewer).width() / _org_width));
+
+            $(_gallery_list_wrapper).width($(_gallery).width() * (1 - _ratio_width));
+
+            _list_item_height = Math.round($(_gallery_viewer).height() / 3)
+
+        }
 
         function test(){
 
